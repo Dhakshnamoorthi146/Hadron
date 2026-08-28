@@ -10,7 +10,18 @@ import pandas as pd
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
-from .sqlstore import reconciliations_frame
+
+def reconciliations_frame(reconciliations) -> pd.DataFrame:
+    """The run's reconciliation checks as a table a human can open and verify:
+    each check, what was expected vs what came out, the variance, and pass/fail."""
+    return pd.DataFrame([{
+        "check": r.name,
+        "expected": round(float(r.expected), 4),
+        "actual": round(float(r.actual), 4),
+        "variance": round(float(r.variance), 4),
+        "passed": bool(r.passed),
+        "note": r.note,
+    } for r in (reconciliations or [])])
 
 TEAL, DARK, GREEN, GREENBG, RED, REDBG = \
     "0C6E78", "0A565E", "2C6E4A", "DBEBE0", "B23A3A", "F4DADA"

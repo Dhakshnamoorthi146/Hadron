@@ -18,14 +18,12 @@ ceded_platform/          THE ENGINE
     closing.py       Steps 15-19: ITD pivot, prior month, movement, persist, reinsurer split
     journal.py       Step 20: the summarized journal entry (debits = credits)
     recon.py         the 9 reconciliation checks
-    sqlstore.py      OPTIONAL: read reference from / write output to Supabase
     report.py        build the presentation Excel
     pipeline.py      run_cycle() — the 20-step orchestrator
 
 run.py               THE RUNNER — 3 files in demo_input/  ->  one Excel in demo_output/
 reference_data/      the reference tables, bundled as CSVs (the engine reads these)
 demo_input/          sample QS / FAC / EB files so you can run it immediately
-.env.example         optional: copy to .env for Supabase output-saving
 requirements.txt     dependencies
 ```
 
@@ -58,35 +56,20 @@ Put **three files** in `demo_input/`, named so the type is in the file name
 
 The engine needs the reference tables (which contract cedes what, at what %, to
 which reinsurer). These ship **with the code**, as CSV files in `reference_data/`.
-The engine reads them straight from disk — **no database, no workbook, no network,
-nothing to configure.** Clone and run.
+The engine reads them straight from disk — **no database, no network, nothing to
+configure.** Clone and run.
 
 The engine reads these files but never writes them, so a teammate can't
-accidentally corrupt the reference. To update the reference after a rule change,
-regenerate the CSVs from the source (see below) and commit them.
+accidentally corrupt the reference. (If `reference_data/` is missing, `run.py`
+falls back to reading the workbook named by the `HADRON_WORKBOOK` env var.)
 
-### Priority order
-`run.py` picks the reference source in this order:
-1. **`reference_data/` local CSVs** — the default (fast, always present)
-2. **Supabase** — used only if you *delete* `reference_data/` and set `SUPABASE_DB_URL`
-3. **The workbook** — used only if neither of the above is available (set `HADRON_WORKBOOK`)
-
-### Optional: Supabase for saving outputs
-Everything above is local. If you *also* want to write a run's **output** tables to
-a Supabase database, copy `.env.example` to `.env`, paste your connection string,
-and run with `--save-to-db`:
-```bash
-python run.py --save-to-db
-```
-The `.env` file is gitignored, and this only writes output tables — never the
-reference.
-
-### Regenerating `reference_data/` from the workbook
+### Regenerating `reference_data/` after a rule change
 ```bash
 python -c "from ceded_platform import load_reference_data; \
 from ceded_platform.reference import save_reference_data_local; \
 save_reference_data_local(load_reference_data(r'PATH\to\workbook.xlsx'), 'reference_data')"
 ```
+Then commit the updated CSVs.
 
 ---
 

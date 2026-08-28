@@ -8,18 +8,13 @@ Ceded engine — one-click folder runner.
 2. Run:   python run.py
 3. Get:   ONE Excel with every output on its own sheet, in  demo_output\
 
-Reference data (the lookup rules) is READ from Supabase when SUPABASE_DB_URL is
-set, otherwise from the workbook. Either way the engine only READS the reference
-— it can never change it. Put your Supabase URL in a  .env  file next to this
-script (see .env.example) and it's picked up automatically.
-
-By default the run writes ONLY the local Excel. Add  --save-to-db  if you also
-want to write the run's OUTPUT tables back to Supabase (off by default so people
-sharing one database don't overwrite each other).
+The lookup rules (reference data) are bundled with the code as CSV files in
+reference_data/, so there is NOTHING to configure — no database, no network. The
+engine only READS them; it never changes them. (If reference_data/ is missing,
+it falls back to the workbook named by the HADRON_WORKBOOK env var.)
 """
 from __future__ import annotations
 
-import argparse
 import glob
 import logging
 import os
@@ -41,15 +36,13 @@ import pandas as pd
 from ceded_platform import PipelineConfig, load_reference_data, run_cycle
 from ceded_platform.reference import load_reference_data_local
 from ceded_platform.report import build_report
-from ceded_platform.sqlstore import (load_reference_data_sql, make_engine,
-                                     save_outputs)
 
 IN_DIR = HERE / "demo_input"
 OUT_DIR = HERE / "demo_output"
 OUT_FILE = OUT_DIR / "ceded_output.xlsx"
 REF_DIR = HERE / "reference_data"       # bundled local reference (CSV) — default
-# Reference workbook used only when SUPABASE_DB_URL is not set. Override with the
-# HADRON_WORKBOOK env var; defaults to a copy sitting next to this script.
+# Fallback reference workbook, used only if reference_data/ is missing. Override
+# with the HADRON_WORKBOOK env var.
 WORKBOOK_REF = os.environ.get(
     "HADRON_WORKBOOK",
     "As-Is and To-Be Process with sample calculations - Hadron X Donyati 2.xlsx")
@@ -105,42 +98,8 @@ def _remap(df: pd.DataFrame, mapping: dict, ptype: str) -> pd.DataFrame:
     return df
 
 
-def _excel_safe(df: pd.DataFrame) -> pd.DataFrame:
-    """Excel can't write list/dict cells (e.g. missing_reinsurers) — stringify."""
-    if df.empty:
-        return df
-    out = df.copy()
-    for c in out.columns:
-        if out[c].map(lambda v: isinstance(v, (list, dict))).any():
-            out[c] = out[c].astype(str)
-    return out
-
-
-def _load_dotenv(path: Path) -> None:
-    """Minimal .env reader (no dependency): set KEY=VALUE lines into the
-    environment if not already set. Lets a teammate paste the Supabase URL into a
-    .env file instead of fiddling with shell environment variables."""
-    if not path.exists():
-        return
-    for line in path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, _, val = line.partition("=")
-        os.environ.setdefault(key.strip(), val.strip().strip('"').strip("'"))
-
-
 def main() -> None:
     logging.basicConfig(level=logging.WARNING)
-    ap = argparse.ArgumentParser(
-        description="Run one ceded cycle from the three files in demo_input/.")
-    ap.add_argument("--save-to-db", action="store_true",
-                    help="also write this run's OUTPUT tables back to Supabase "
-                         "(off by default so shared-DB users don't overwrite "
-                         "each other; never touches the reference tables)")
-    args = ap.parse_args()
-
-    _load_dotenv(HERE / ".env")
     found = _find_inputs()
     if "qs" not in found:
         sys.exit(f"No gross/QS file found in {IN_DIR}\n"
@@ -157,17 +116,10 @@ def main() -> None:
               else f"  {k.upper():<4} <- (none found)")
     print(f"  rows: QS={len(qs):,}  FAC={len(fac):,}  EB={len(eb):,}")
 
-    # reference tables — priority: bundled local CSVs (fast, no network) ->
-    # Supabase (if SUPABASE_DB_URL set) -> the workbook. An engine is still made
-    # when a URL is present so --save-to-db can write outputs.
-    url = os.environ.get("SUPABASE_DB_URL")
-    engine = make_engine(url) if url else None
+    # reference tables: bundled local CSVs (default), else the workbook fallback
     if REF_DIR.exists() and any(REF_DIR.glob("*.csv")):
         ref = load_reference_data_local(REF_DIR)
         print("  reference: read from bundled local files (reference_data/)")
-    elif engine is not None:
-        ref = load_reference_data_sql(engine)
-        print("  reference: read from Supabase")
     else:
         ref = load_reference_data(WORKBOOK_REF)
         print("  reference: read from the workbook")
@@ -184,14 +136,6 @@ def main() -> None:
     print(f"\n  -> wrote the report to  {OUT_FILE}")
     print("     tabs: Summary, Movement, Journal Entry, Allocation, "
           "Reconciliations, ITD Pivot, Detail, Input QS/FAC/EB")
-
-    # optionally write the OUTPUT tables back to Supabase (never the reference) - #
-    if engine is not None and args.save_to_db:
-        saved = save_outputs(res, engine)
-        print(f"  -> saved outputs into Supabase: {', '.join(saved)}")
-    elif engine is not None:
-        print("  -> outputs written to the local Excel only "
-              "(add --save-to-db to also write them to Supabase)")
 
     print("\n" + ("ALL RECONCILIATIONS PASS ✓" if res.all_recons_pass
                   else "*** SOME RECONCILIATIONS FAILED ***"))
