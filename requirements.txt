@@ -1,0 +1,11 @@
+# Ceded calculation engine — runtime dependencies
+pandas>=2.0
+numpy>=1.24
+openpyxl>=3.1
+SQLAlchemy>=2.0
+
+# Postgres / Supabase driver (only needed if you read/write via SUPABASE_DB_URL)
+psycopg2-binary>=2.9
+
+# Dev / test
+pytest>=7.4
