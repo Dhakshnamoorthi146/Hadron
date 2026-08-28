@@ -1,0 +1,93 @@
+Column,Account Number,Internal ID,tranID,Summarize?,Department
+Direct Receivable,120001.0,1256.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Direct Deferred Receivable,120003.0,1258.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Intercompany Receivable from HSIC Insurance (11),120005.0,1407.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded FAS 113 Loss Case Reserves,142001.0,961.0,Underwriting Claims Entry,Ceded,Underwriting : Underwriting
+Ceded FAS 113 Indemnity IBNR,142002.0,962.0,Underwriting IBNR Entry,Ceded,Underwriting : Underwriting
+Ceded FAS 113 DCC Case Reserves,142003.0,963.0,Underwriting Claims Entry,Ceded,Underwriting : Underwriting
+Ceded FAS 113 DCC IBNR,142004.0,964.0,Underwriting IBNR Entry,Ceded,Underwriting : Underwriting
+Ceded FAS 113 LAE Case Reserves,142005.0,965.0,Underwriting Claims Entry,Ceded,Underwriting : Underwriting
+Ceded FAS 113 A&O IBNR,142006.0,966.0,Underwriting IBNR Entry,Ceded,Underwriting : Underwriting
+Ceded FAS 113 Asset - Ceded Unearned Premium,142007.0,967.0,Underwriting Premium Entry,Ceded,Underwriting : Underwriting
+Ceded FAS 113 Salvage Case Reserves,142008.0,1744.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded FAS 113 Subrogation Case Reserves,142009.0,1747.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded FAS 113 ULAE IBNR,142010.0,1762.0,Underwriting IBNR Entry,Ceded,Underwriting : Underwriting
+Direct DAC,150001.0,968.0,Underwriting Premium Entry,No,Underwriting : Underwriting
+Direct Loss Funding Paid,110021.0,1835.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Loss Case Reserves,211001.0,1054.0,Underwriting Claims Entry,Ceded,Underwriting : Underwriting
+Ceded Loss Reserves,211001.0,1054.0,Underwriting Claims Entry,Ceded,Underwriting : Underwriting
+Direct Loss Case Reserves,211001.0,1054.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Indemnity IBNR,211002.0,1055.0,Underwriting IBNR Entry,Ceded,Underwriting : Underwriting
+Direct Indemnity IBNR,211002.0,1055.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Ceded Salvage Reserves,211005.0,1740.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Direct Salvage Reserves,211005.0,1740.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Subrogation Reserves,211006.0,1741.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Direct Subrogation Reserves,211006.0,1741.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded ULAE IBNR,214001.0,1763.0,Underwriting IBNR Entry,Ceded,Underwriting : Underwriting
+Direct ULAE IBNR,214001.0,1763.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Ceded DCC Case Reserves,212001.0,1060.0,Underwriting Claims Entry,Ceded,Underwriting : Underwriting
+Ceded DCC Reserves,212001.0,1060.0,Underwriting Claims Entry,Ceded,Underwriting : Underwriting
+Direct DCC Case Reserves,212001.0,1060.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded DCC IBNR,212002.0,1061.0,Underwriting IBNR Entry,Ceded,Underwriting : Underwriting
+Direct DCC IBNR,212002.0,1061.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Ceded LAE Case Reserves,213001.0,1066.0,Underwriting Claims Entry,Ceded,Underwriting : Underwriting
+Ceded LAE Reserves,213001.0,1066.0,Underwriting Claims Entry,Ceded,Underwriting : Underwriting
+Direct LAE Case Reserves,213001.0,1066.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded A&O IBNR,213002.0,1067.0,Underwriting IBNR Entry,Ceded,Underwriting : Underwriting
+Direct A&O IBNR,213002.0,1067.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Ceded Unearned Premium,220001.0,1073.0,Underwriting Premium Entry,Ceded,Underwriting : Underwriting
+Direct UEP,220001.0,1073.0,Underwriting Premium Entry,No,Underwriting : Underwriting
+Ceded Reinsurance Payable,230001.0,1076.0,Underwriting Premium Entry,Ceded,Underwriting : Underwriting
+Ceded Commission DAC,240001.0,1077.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded DAC,240001.0,1077.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Fronting Fee DAC,240002.0,1728.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Brokerage Fee DAC,240003.0,1729.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded FWH Liability,250001.0,1078.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Intercompany Payable to HRBR (1),270005.0,1408.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Written Premium,411001.0,1156.0,Underwriting Premium Entry,Ceded,Underwriting : Underwriting
+Direct Written Premium,411001.0,1156.0,Underwriting Premium Entry,No,Underwriting : Underwriting
+Ceded Change in UEP,412001.0,1158.0,Underwriting Premium Entry,No,Underwriting : Underwriting
+Direct Change In UEP,412001.0,1158.0,Underwriting Premium Entry,No,Underwriting : Underwriting
+Ceded Commission,420001.0,1160.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Commissions,420001.0,1160.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Fronting Commission,420002.0,1161.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Fronting Commissions,420002.0,1161.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Broker Commission,420003.0,1162.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Brokerage Commission,420003.0,1162.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Brokerage Commission Revenue,420003.0,1162.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Brokerage Fee,420003.0,1162.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Change In DAC,450001.0,1254.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Change in Fronting Fee DAC,450002.0,1730.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Change In Brokerage Fee DAC,450003.0,1731.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Ceded Paid Loss Indemnity,511001.0,854.0,Underwriting Claims Entry,Ceded,Underwriting : Underwriting
+Direct Paid Loss Indemnity,511001.0,854.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Salvage Received,511002.0,856.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Direct Salvage Received,511002.0,856.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Subrogation Received,511003.0,857.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Direct Subrogation Received,511003.0,857.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Paid DCC,512001.0,858.0,Underwriting Claims Entry,Ceded,Underwriting : Underwriting
+Direct Paid DCC,512001.0,858.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Paid LAE,512002.0,860.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Direct Paid LAE,512002.0,860.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Change In Loss Reserves,513001.0,862.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Direct Change in Case Reserves,513001.0,862.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Change In Indemnity IBNR Reserves,513002.0,864.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Direct Change In Indemnity IBNR,513002.0,864.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Ceded Change in ULAE IBNR,513003.0,1764.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Direct Change In ULAE IBNR,513003.0,1764.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Ceded Change In Salvage Case Reserves,513005.0,1742.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Direct Change In Salvage Reserves,513005.0,1742.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Change In Subrogation Case Reserves,513006.0,1743.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Direct Change In Subrogation Reserves,513006.0,1743.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Change In DCC Reserves,514001.0,866.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Direct Change In DCC Reserves,514001.0,866.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Change In DCC IBNR,514002.0,868.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Direct Change In DCC IBNR,514002.0,868.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Ceded Change In LAE Reserves,515001.0,870.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Direct Change In LAE Reserves,515001.0,870.0,Underwriting Claims Entry,No,Underwriting : Underwriting
+Ceded Change In A&O IBNR,515002.0,872.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Direct Change in A&O IBNR,515002.0,872.0,Underwriting IBNR Entry,No,Underwriting : Underwriting
+Direct Commission Expense,520001.0,874.0,Underwriting Premium Entry,No,Underwriting : Underwriting
+Direct Change In DAC,530001.0,876.0,Underwriting Premium Entry,Yes,Underwriting : Underwriting
+Direct Fees,,,Underwriting Premium Entry,No,Underwriting : Underwriting
+Ceded Change In Indemnity IBNR,513002.0,864.0,Underwriting IBNR Entry,No,Underwriting : Underwriting

@@ -1,0 +1,13 @@
+reinsurer_id,reinsurer_code,reinsurer_name,naic_code,domicile_country,collateral_type,is_authorized,am_best_rating,am_best_financial_size,am_best_outlook,sp_rating,regulatory_status,group_name,relationship_effective_date,is_active
+1,R01,IQUW,10385,GB,NONE,True,A,XII,Stable,A,Authorized,IQUW Group,2023-01-01 00:00:00,True
+2,R02,QBE,10219,AU,TRUST,True,A+,XV,Stable,A+,Authorized,QBE Insurance Group,2022-01-01 00:00:00,True
+3,R03,ARC 1,11270,US,FWH + Trust,True,A,XIII,Stable,A,Authorized,Arch Capital Group,2022-01-01 00:00:00,True
+4,R04,Multistrat Fermat,0,BM,TRUST,False,NR,,,NR,Certified,Fermat Capital Management,2023-01-01 00:00:00,True
+5,R05,Multistrat Alimco,0,BM,TRUST,False,NR,,,NR,Certified,Alimco Re,2023-01-01 00:00:00,True
+6,R06,Allianz (ARC),10104,DE,FWH + Trust,True,A+,XV,Stable,AA,Authorized,Allianz SE,2022-01-01 00:00:00,True
+7,R07,Fergus,0,BM,TRUST,False,A-,X,Stable,A-,Certified,Fergus Re,2024-01-01 00:00:00,True
+8,R08,Palms,0,US,NONE,True,A,XI,Positive,A,Authorized,Palms Insurance Group,2024-01-01 00:00:00,True
+9,R09,ICW,10218,US,NONE,True,A,XIV,Stable,A,Authorized,ICW Group,2024-07-01 00:00:00,True
+10,R10,Hannover,10030,DE,NONE,True,A+,XV,Stable,AA-,Authorized,Hannover Re,2022-01-01 00:00:00,True
+11,R11,Arch Capital,11150,BM,TRUST,True,A+,XV,Stable,A+,Authorized,Arch Capital Group,2024-01-01 00:00:00,True
+12,R12,Swiss Re,10029,CH,FWH + Trust,True,A+,XV,Stable,AA-,Reciprocal Jurisdiction,Swiss Re Group,2022-01-01 00:00:00,True

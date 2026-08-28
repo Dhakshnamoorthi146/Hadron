@@ -1,0 +1,8 @@
+Trading Partner,Calc Path,MGA,Line of Business,Type (for IBNR %),Accident Year,Loss Ratio,Indemnity,DCC,A&O,ULAE
+COR,EB,COR,,Property,2025,0.39,0.3588,0.0078,0.0234,0
+COR,FAC,COR,,Property,2025,0.39,0.3588,0.0078,0.0234,0
+"UMR, MGA Alias, Entry Type, Product Name, Line of business, Class of business, ASLOB Code, UW Year",,,,,,,,,,
+Reference Table 2: FAC LOB Mapping,,,,,,,,,,
+UMR,Trading Partner,Entry type,Product Name,Line of Business (only LOB is empty),Class of Business,ASLOB Code (only ASLOB is empty),Risk State (only Risk state is empty),UW Year,MGA Alias,Calc Path
+HSIC-1COR01-2025-10,COR,Actual,Habitational,Equipment Breakdown,Property,1,CA,2025,CORE,EB
+HSIC-1COR01-2025-10,COR,Actual,Habitational,Commercial Property,Property,1,CA,2025,CORE,FAC

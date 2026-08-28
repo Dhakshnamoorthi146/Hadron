@@ -86,6 +86,47 @@ class ReferenceData:
 
 
 # --------------------------------------------------------------------------- #
+# Local bundled reference (CSV) — no database, no workbook needed              #
+# --------------------------------------------------------------------------- #
+
+# The 12 reference tables, in ReferenceData constructor order.
+REFERENCE_FIELDS = (
+    "loss_ratios", "fac_lob_map", "ceded_id_map", "exclusion_rules",
+    "contract_exclusions", "reinsurer_panel", "settlements", "collateral",
+    "fet_payable", "reinsurer_master", "gaap_account_codes", "gaap_reclass",
+)
+
+
+def save_reference_data_local(ref: "ReferenceData", out_dir) -> dict:
+    """Dump every reference table to <out_dir>/<field>.csv so the engine can run
+    from bundled local files — no Supabase, no workbook. Returns {file: rows}."""
+    from pathlib import Path
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    counts: dict = {}
+    for name in REFERENCE_FIELDS:
+        df = getattr(ref, name, None)
+        df = pd.DataFrame() if df is None else df
+        df.to_csv(out / f"{name}.csv", index=False)
+        counts[f"{name}.csv"] = len(df)
+    return counts
+
+
+def load_reference_data_local(in_dir) -> "ReferenceData":
+    """Read the bundled reference CSVs from <in_dir> back into ReferenceData.
+    Missing files load as empty frames (the engine handles that). Dates/numbers
+    are re-coerced by ReferenceData.__post_init__, so CSV round-tripping is safe."""
+    from pathlib import Path
+    d = Path(in_dir)
+
+    def rd(name: str) -> pd.DataFrame:
+        p = d / f"{name}.csv"
+        return pd.read_csv(p) if p.exists() else pd.DataFrame()
+
+    return ReferenceData(**{name: rd(name) for name in REFERENCE_FIELDS})
+
+
+# --------------------------------------------------------------------------- #
 # Workbook loaders                                                             #
 # --------------------------------------------------------------------------- #
 

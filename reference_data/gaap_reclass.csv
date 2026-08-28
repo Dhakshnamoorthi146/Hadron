@@ -1,0 +1,21 @@
+Old Account,Old Account Description,DAC Match,Line Memo,GL Account,Account Internal ID,tranID,Summarize?,Accounting Book
+220001,Ceded UEP,2C,Ceded FAS 113 Asset - Ceded Unearned Premium,142007,967,Underwriting Premium Entry,Ceded,UK to US GAAP
+412001,Ceded Change in UEP,2C,Ceded UEP,220001,1073,Underwriting Premium Entry,Ceded,UK to US GAAP
+211001,Ceded Loss Case Reserves,2C,Ceded FAS 113 Loss Case Reserves,142001,961,Underwriting Claims Entry,Ceded,UK to US GAAP
+211002,Ceded Indemnity IBNR Reserves,2C,Ceded FAS 113 Indemnity IBNR,142002,962,Underwriting IBNR Entry,Ceded,UK to US GAAP
+212001,Ceded DCC Case Reserves,2C,Ceded FAS 113 DCC Case Reserves,142003,963,Underwriting Claims Entry,Ceded,UK to US GAAP
+212002,Ceded DCC IBNR,2C,Ceded FAS 113 DCC IBNR,142004,964,Underwriting IBNR Entry,Ceded,UK to US GAAP
+213001,Ceded LAE Reserves,2C,Ceded FAS 113 LAE Case Reserves,142005,965,Underwriting Claims Entry,Ceded,UK to US GAAP
+213002,Ceded A&O IBNR,2C,Ceded FAS 113 A&O IBNR,142006,966,Underwriting IBNR Entry,Ceded,UK to US GAAP
+211005,Ceded Salvage Reserves,2C,Ceded FAS 113 Salvage Case Reserves,142008,1744,Underwriting Claims Entry,No,UK to US GAAP
+211006,Ceded Subrogation Reserves,2C,Ceded FAS 113 Subrogation Case Reserves,142009,1747,Underwriting Claims Entry,No,UK to US GAAP
+214001,Ceded ULAE IBNR,2C,Ceded FAS 113 ULAE IBNR,142010,1762,Underwriting IBNR Entry,Ceded,UK to US GAAP
+513001,Ceded Change In Loss Reserves,2C,Ceded Loss Case Reserves,211001,1054,Underwriting Claims Entry,Ceded,UK to US GAAP
+513002,Ceded Change In Indemnity IBNR Reserves,2C,Ceded Indemnity IBNR Reserves,211002,1055,Underwriting IBNR Entry,Ceded,UK to US GAAP
+514001,Ceded Change In DCC Reserves,2C,Ceded DCC Case Reserves,212001,1060,Underwriting Claims Entry,Ceded,UK to US GAAP
+514002,Ceded Change In DCC IBNR,2C,Ceded DCC IBNR,212002,1061,Underwriting IBNR Entry,Ceded,UK to US GAAP
+515001,Ceded Change In LAE Reserves,2C,Ceded LAE Reserves,213001,1066,Underwriting Claims Entry,Ceded,UK to US GAAP
+515002,Ceded Change in A&O IBNR,2C,Ceded A&O IBNR,213002,1067,Underwriting IBNR Entry,Ceded,UK to US GAAP
+513005,Direct Change In Salvage Reserves,2C,Ceded Salvage Reserves,211005,1740,Underwriting Claims Entry,No,UK to US GAAP
+513006,Ceded Change In Subrogation Case Reserves,2C,Ceded Subrogation Reserves,211006,1741,Underwriting Claims Entry,No,UK to US GAAP
+513003,Ceded Change in ULAE IBNR,2C,Ceded ULAE IBNR,214001,1763,Underwriting IBNR Entry,Ceded,UK to US GAAP

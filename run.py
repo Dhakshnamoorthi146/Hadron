@@ -39,6 +39,7 @@ sys.path.insert(0, str(HERE))
 import pandas as pd
 
 from ceded_platform import PipelineConfig, load_reference_data, run_cycle
+from ceded_platform.reference import load_reference_data_local
 from ceded_platform.report import build_report
 from ceded_platform.sqlstore import (load_reference_data_sql, make_engine,
                                      save_outputs)
@@ -46,6 +47,7 @@ from ceded_platform.sqlstore import (load_reference_data_sql, make_engine,
 IN_DIR = HERE / "demo_input"
 OUT_DIR = HERE / "demo_output"
 OUT_FILE = OUT_DIR / "ceded_output.xlsx"
+REF_DIR = HERE / "reference_data"       # bundled local reference (CSV) — default
 # Reference workbook used only when SUPABASE_DB_URL is not set. Override with the
 # HADRON_WORKBOOK env var; defaults to a copy sitting next to this script.
 WORKBOOK_REF = os.environ.get(
@@ -155,10 +157,15 @@ def main() -> None:
               else f"  {k.upper():<4} <- (none found)")
     print(f"  rows: QS={len(qs):,}  FAC={len(fac):,}  EB={len(eb):,}")
 
-    # reference tables: Supabase if configured, else the workbook
+    # reference tables — priority: bundled local CSVs (fast, no network) ->
+    # Supabase (if SUPABASE_DB_URL set) -> the workbook. An engine is still made
+    # when a URL is present so --save-to-db can write outputs.
     url = os.environ.get("SUPABASE_DB_URL")
     engine = make_engine(url) if url else None
-    if engine is not None:
+    if REF_DIR.exists() and any(REF_DIR.glob("*.csv")):
+        ref = load_reference_data_local(REF_DIR)
+        print("  reference: read from bundled local files (reference_data/)")
+    elif engine is not None:
         ref = load_reference_data_sql(engine)
         print("  reference: read from Supabase")
     else:
