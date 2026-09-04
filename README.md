@@ -104,11 +104,16 @@ MGA-specific column-name variants are mapped in `config.BDX_COLUMN_MAP`.
 | **Summary** | the answer at a glance: ceded by program, split by reinsurer, and the 9-check validation |
 | Movement | this month's change by program (Ceded ID) — what you book |
 | Journal Entry | the summarized, GL-coded entry (debits = credits), NetSuite-shaped |
+| Journal Entry (US GAAP) | the same entry after the UK→US GAAP reclass (mapped from `FAC GAAPReClass`) |
 | Allocation | per program: seeded vs allocated across the reinsurer panel, with flags |
+| Exclusion Log | every excluded row with its candidate contract and reason (rule vs corridor) — zero silent drops |
 | Reconciliations | the 9 checks, expected vs actual — a human can verify the run |
 | Detail | every row with all 15 ceded measures (the grain) |
 | ITD Pivot | inception-to-date totals by program |
 | Input QS / FAC / EB | the exact inputs used |
+
+Plus a **`reinsurer_workbooks/`** folder in `demo_output/` — one styled `.xlsx`
+per reinsurer (the Step-19 terminal deliverable).
 
 ---
 
@@ -164,13 +169,22 @@ These are kept **workbook-faithful and flagged** — not silently decided:
 
 1. **Exclusion routing for excluded rows** — where an excluded line re-cedes (a
    same-partner sibling contract) needs confirmation once the bolt-on feed exists.
-2. **`TERM_LIMIT` rules need a `Policy Limit` column** on the feeds to bind.
+2. **T3 corridor / `TERM_LIMIT` needs a per-row limit column.** The Step-13 corridor
+   check (T3 `Lower/Higher Limit Exclusion`) is now wired up, but it can only fire
+   once the feed carries the limit value it bands on (config `corridor_limit_column`,
+   default `Policy Limit`). Until then it is a **logged no-op** — nothing is excluded
+   on data it can't test.
 3. **XOL / surplus-share calc paths** are future — the `Calc Path` switch is built
    to take them, but their formulas aren't defined yet.
-4. **Journal Dr/Cr convention & GAAP reclass** — mapped from the workbook's account
-   tables but not yet tied to a real Hadron NetSuite journal; validate on one real month.
+4. **Journal Dr/Cr convention & GAAP reclass** — the base entry and the US-GAAP
+   reclass (Journal Entry (US GAAP) tab) are both produced, mapped from the workbook's
+   account tables; not yet tied to a real Hadron NetSuite journal — validate on one
+   real month before relying on the Dr/Cr presentation.
 5. **Settlement / collateral matching** by reinsurer + period needs the T10 master
    to bridge panel names to collateral names.
+6. **T6 `Effective FF` / `Effective FWH`** are read as static panel values. The spec
+   says the engine should *recompute* them, but the formula is in neither the spec nor
+   the panel data — supply the workbook's panel formula before these can be derived.
 
 ---
 

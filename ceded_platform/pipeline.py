@@ -11,7 +11,7 @@ from .closing import (step15_itd_pivot, step16_prior, step17_movement,
                       step18_persist, step19_reinsurer_workbooks)
 from .config import PipelineConfig
 from .engine_calc import step13_assign, step14_calculate
-from .journal import build_journal_entry, journal_balances
+from .journal import build_journal_entry, build_reclass_entry, journal_balances
 from .recon import ReconResult, allocation_audit, run_recons
 from .reference import ReferenceData
 from .steps import (step1_2_ingest_bdx, step3_4_dates, step5_group,
@@ -36,6 +36,7 @@ class RunResult:
     reconciliations: list = field(default_factory=list)
     allocation_audit: pd.DataFrame = field(default_factory=pd.DataFrame)
     journal_entry: pd.DataFrame = field(default_factory=pd.DataFrame)
+    reclass_entry: pd.DataFrame = field(default_factory=pd.DataFrame)
 
     @property
     def all_recons_pass(self) -> bool:
@@ -65,6 +66,7 @@ def run_cycle(eb_bdx: pd.DataFrame, fac_bdx: pd.DataFrame,
     backend_out = step18_persist(backend, itd, cfg)    # step 18
     books = step19_reinsurer_workbooks(movement, ref, cfg)  # step 19
     journal = build_journal_entry(movement, ref, cfg)      # step 20 (period movement)
+    reclass = build_reclass_entry(journal, ref, cfg)       # step 20b (UK->US GAAP)
 
     recons = run_recons(eb_bdx, fac_bdx, raw, with_offsets, merged, fact,
                         movement, books, ref, cfg)
@@ -82,4 +84,5 @@ def run_cycle(eb_bdx: pd.DataFrame, fac_bdx: pd.DataFrame,
 
     return RunResult(raw, with_offsets, merged, fact, itd, prior, movement,
                      backend_out, books, excl_log, recons,
-                     allocation_audit=audit, journal_entry=journal)
+                     allocation_audit=audit, journal_entry=journal,
+                     reclass_entry=reclass)

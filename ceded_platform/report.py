@@ -167,10 +167,18 @@ def _build_summary(ws, res, recon, cfg=None) -> None:
             value="Journal entry balances (debits = credits)  ✓" if bal
             else "Journal entry does NOT balance  ✗").font = \
         Font(size=11, color=GREEN if bal else RED)
+    r += 1
+    excl = getattr(res, "exclusion_log", None)
+    n_excl = 0 if excl is None or excl.empty else len(excl)
+    ws.cell(row=r, column=1,
+            value=(f"{n_excl} row(s) excluded — each logged with a rule code "
+                   "(see Exclusion Log tab)" if n_excl else
+                   "No rows excluded this run")).font = SUB_FONT
     r += 2
     ws.cell(row=r, column=1,
             value="See the tabs for detail: Movement, Journal Entry, "
-                  "Allocation, Reconciliations, and the inputs.").font = SUB_FONT
+                  "Journal Entry (US GAAP), Allocation, Exclusion Log, "
+                  "Reconciliations, and the inputs.").font = SUB_FONT
 
 
 def build_report(res, inputs: dict, path, cfg=None):
@@ -179,7 +187,9 @@ def build_report(res, inputs: dict, path, cfg=None):
     sheets = {
         "Movement": res.movement,
         "Journal Entry": res.journal_entry,
+        "Journal Entry (US GAAP)": getattr(res, "reclass_entry", None),
         "Allocation": res.allocation_audit,
+        "Exclusion Log": getattr(res, "exclusion_log", None),
         "Reconciliations": recon,
         "ITD Pivot": res.itd_pivot,
         "Detail": res.fact_ceded_calc,
@@ -200,3 +210,32 @@ def build_report(res, inputs: dict, path, cfg=None):
         s.delete_rows(1, s.max_row)
         _build_summary(s, res, recon, cfg)
     return path
+
+
+import re as _re
+
+
+def _safe_name(name) -> str:
+    """A filesystem-safe file stem from a reinsurer name."""
+    s = _re.sub(r"[^A-Za-z0-9._ -]", "_", str(name)).strip().strip(".")
+    return (s or "reinsurer")[:80]
+
+
+def write_reinsurer_workbooks(books: dict, out_dir) -> list:
+    """Step 19 terminal deliverable (spec §8): one styled workbook per reinsurer.
+
+    Writes each `res.reinsurer_books[reinsurer]` to <out_dir>/<safe-name>.xlsx.
+    Returns the list of written paths. No-op (empty list) when there are no books."""
+    from pathlib import Path
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    written = []
+    for reinsurer, df in (books or {}).items():
+        path = out / f"{_safe_name(reinsurer)}.xlsx"
+        with pd.ExcelWriter(path, engine="openpyxl") as xw:
+            _excel_safe(df if df is not None else pd.DataFrame()).to_excel(
+                xw, sheet_name="Settlement", index=False)
+            for ws in xw.book.worksheets:
+                _style_data_sheet(ws)
+        written.append(path)
+    return written

@@ -120,6 +120,35 @@ def _exclusion_ok(rows: pd.DataFrame, contract_id: str, ref: ReferenceData,
     return ok
 
 
+def _corridor_ok(df: pd.DataFrame, contract_row: pd.Series,
+                 cfg: PipelineConfig, warned: set) -> np.ndarray:
+    """T3 corridor exclusion (spec §7.1): a row is excluded when its limit/size
+    value falls outside the contract's [Lower Limit Exclusion, Higher Limit
+    Exclusion] band. No-op (all True) + one-time flag when the band is absent on
+    the contract or the limit column is absent from the feed."""
+    n = len(df)
+    lo = contract_row.get("Lower Limit Exclusion")
+    hi = contract_row.get("Higher Limit Exclusion")
+    if pd.isna(lo) and pd.isna(hi):
+        return np.ones(n, dtype=bool)                 # no band on this contract
+    col = cfg.corridor_limit_column
+    if col not in df.columns:
+        if "corridor_no_column" not in warned:
+            warned.add("corridor_no_column")
+            log.info("Step 13: T3 corridor band present but feed has no '%s' "
+                     "column — corridor check skipped (flagged, nothing excluded).",
+                     col)
+        return np.ones(n, dtype=bool)                 # can't test -> no-op + flag
+    v = pd.to_numeric(df[col], errors="coerce").to_numpy()
+    has = ~np.isnan(v)
+    ok = np.ones(n, dtype=bool)
+    if pd.notna(lo):
+        ok &= ~(has & (v < num(lo)))
+    if pd.notna(hi):
+        ok &= ~(has & (v > num(hi)))
+    return ok
+
+
 def step13_assign(merged: pd.DataFrame, ref: ReferenceData,
                   cfg: PipelineConfig) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Assign each row a Ceded ID.
@@ -141,6 +170,7 @@ def step13_assign(merged: pd.DataFrame, ref: ReferenceData,
     assigned = np.full(n, -1)
     cim = ref.ceded_id_map.reset_index(drop=True)
     excl_hits: list[dict] = []
+    warned: set = set()          # so the corridor no-op flag logs only once
 
     tiers = (1, 2) if cfg.cross_partner_fallback else (1,)
     for tier in tiers:
@@ -158,7 +188,9 @@ def step13_assign(merged: pd.DataFrame, ref: ReferenceData,
             if not m.any():
                 continue
             rules_ok = _exclusion_ok(df, c["Ceded ID"], ref, cfg)
-            rejected = m & ~rules_ok
+            corridor_ok = _corridor_ok(df, c, cfg, warned)
+            keep = rules_ok & corridor_ok
+            rejected = m & ~keep
             for i in np.flatnonzero(rejected):
                 excl_hits.append({
                     "row_id": df.at[i, "row_id"], "tier": tier,
@@ -166,8 +198,9 @@ def step13_assign(merged: pd.DataFrame, ref: ReferenceData,
                     "Trading Partner": tp[i], "Calc Path": cp[i],
                     "Line of Business": df.at[i, "Line of Business"]
                     if "Line of Business" in df.columns else None,
+                    "reason": "rule" if not rules_ok[i] else "corridor",
                 })
-            assigned = np.where(m & rules_ok, ci, assigned)
+            assigned = np.where(m & keep, ci, assigned)
 
     hit = assigned >= 0
     for src, dst in CONTRACT_ATTRS.items():

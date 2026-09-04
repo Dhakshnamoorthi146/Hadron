@@ -35,7 +35,7 @@ import pandas as pd
 
 from ceded_platform import PipelineConfig, load_reference_data, run_cycle
 from ceded_platform.reference import load_reference_data_local
-from ceded_platform.report import build_report
+from ceded_platform.report import build_report, write_reinsurer_workbooks
 
 IN_DIR = HERE / "demo_input"
 OUT_DIR = HERE / "demo_output"
@@ -134,8 +134,15 @@ def main() -> None:
     OUT_DIR.mkdir(exist_ok=True)
     build_report(res, {"qs": qs, "fac": fac, "eb": eb}, OUT_FILE, cfg)
     print(f"\n  -> wrote the report to  {OUT_FILE}")
-    print("     tabs: Summary, Movement, Journal Entry, Allocation, "
-          "Reconciliations, ITD Pivot, Detail, Input QS/FAC/EB")
+    print("     tabs: Summary, Movement, Journal Entry, Journal Entry (US GAAP), "
+          "Allocation, Exclusion Log, Reconciliations, ITD Pivot, Detail, "
+          "Input QS/FAC/EB")
+
+    # Step 19 terminal deliverable: one workbook per reinsurer.
+    books_dir = OUT_DIR / "reinsurer_workbooks"
+    written = write_reinsurer_workbooks(res.reinsurer_books, books_dir)
+    if written:
+        print(f"  -> wrote {len(written)} reinsurer workbook(s) to  {books_dir}")
 
     print("\n" + ("ALL RECONCILIATIONS PASS ✓" if res.all_recons_pass
                   else "*** SOME RECONCILIATIONS FAILED ***"))

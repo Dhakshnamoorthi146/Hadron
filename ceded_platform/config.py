@@ -98,3 +98,9 @@ class PipelineConfig:
     cross_partner_fallback: bool = False
     recon_tolerance: float = 0.01
     group_keys: list = field(default_factory=lambda: list(STEP5_GROUP_KEYS))
+    # T3 corridor exclusion (spec §7.1): the ceded_id_map's Lower/Higher Limit
+    # Exclusion columns band on a per-row limit/size value. This names the input
+    # column that carries it. When the column is absent from the feed (the current
+    # premium case), the corridor check is a logged no-op — the mechanism exists
+    # but nothing is silently excluded on data that can't be tested.
+    corridor_limit_column: str = "Policy Limit"
